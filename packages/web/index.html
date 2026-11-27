@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="vi" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/a4-logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#09090b" />
+    <title>A4 LTVQuiz - Nền tảng luyện thi cho học sinh</title>
+    <meta name="description" content="A4 LTVQuiz - Nền tảng luyện thi cho học sinh. Soạn đề thi trắc nghiệm, quản lý tài liệu và làm bài trực tuyến." />
+    
+    <!-- Open Graph / Facebook / Zalo / Messenger Link Preview -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="A4 LTVQuiz" />
+    <meta property="og:title" content="A4 LTVQuiz - Nền tảng luyện thi cho học sinh" />
+    <meta property="og:description" content="A4 LTVQuiz - Nền tảng luyện thi cho học sinh. Soạn đề thi từ PDF, Word, chia sẻ và làm bài trực tuyến thuận tiện." />
+    <meta property="og:image" content="/a4-logo.png" />
+    
+    <!-- Twitter Card Link Preview -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="A4 LTVQuiz - Nền tảng luyện thi cho học sinh" />
+    <meta name="twitter:description" content="A4 LTVQuiz - Nền tảng luyện thi cho học sinh. Soạn đề thi từ PDF, Word, chia sẻ và làm bài trực tuyến thuận tiện." />
+    <meta name="twitter:image" content="/a4-logo.png" />
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('ltvquiz_theme') || 'dark';
+          var resolved = saved === 'system'
+            ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+            : (saved === 'light' ? 'light' : 'dark');
+          document.documentElement.classList.remove('light', 'dark');
+          document.documentElement.classList.add(resolved);
+        } catch (e) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,62 @@
+graph TD
+    subgraph Teacher_Dashboard ["Giáo viên / Quản lý"]
+        Layout["Bố cục chung & Menu phân nhóm (Layout)"]
+        Dashboard["Tổng quan phòng thi (Dashboard)"]
+        ExamManagement["Quản lý bài thi (ExamManagementPage)"]
+        DocumentManagement["Tài liệu & Thư viện (DocumentManagementPage)"]
+        ResultsPage["Kết quả bài thi (ResultsPage)"]
+        StatisticsPage["Thống kê số liệu (StatisticsPage)"]
+        SettingsPage["Cài đặt hệ thống (SettingsPage)"]
+        Editor["Soạn thảo đề thi (EditorPage)"]
+        SettingsDrawer["Cài đặt đề thi (QuizSettingsDrawer)"]
+        PublishModal["Xuất bản bài thi (PublishModal)"]
+        CreateQuiz["Tạo đề thi (CreateQuiz)"]
+        LibraryPage["Kho đề & Thư viện (LibraryPage)"]
+    end
+
+    subgraph Kho_De_Subsystem ["Hệ thống Kho đề & Thư viện (v1.4.0)"]
+        LibraryStorage["LibraryStorageService (Folders, Resources, Trash, Shares)"]
+        LibraryZip["LibraryZipService (Download File / Bulk ZIP)"]
+        ShareViewer["Trang xem chia sẻ (/share/library/:token)"]
+        FolderHierarchy["Cây thư mục đa tầng + Chống chu trình"]
+    end
+
+    subgraph Core_Services ["Dịch vụ & Dữ liệu"]
+        SharedTypes["@ltvquiz/shared (Quiz, LibraryResource, LibraryFolder)"]
+        Storage["StorageService (Quizzes, Documents & Attempts)"]
+        ExportHelper["studentExportHelper (UTF-8 BOM CSV / Passcode Validator)"]
+    end
+
+    subgraph Student_Portal ["Cổng học sinh làm bài"]
+        QuizPage["Trang làm bài (/test/:id)"]
+        PassGate["Cổng kiểm tra Mật mã & Thông tin thí sinh"]
+        ExamSession["Phiên thi trực tuyến + Anti-cheat"]
+        AutoSubmit["Nộp bài & Lưu Attempt"]
+    end
+
+    Editor --> SettingsDrawer
+    Editor --> PublishModal
+    Editor -->|"Lưu vào Kho đề"| LibraryStorage
+    SettingsDrawer --> SharedTypes
+    PublishModal --> Storage
+    PublishModal -.->|"Sao chép link & mật mã"| QuizPage
+
+    CreateQuiz -->|"Duyệt cây thư mục & nạp tài liệu"| LibraryStorage
+    LibraryPage --> LibraryStorage
+    LibraryPage --> LibraryZip
+    LibraryStorage --> FolderHierarchy
+    LibraryStorage --> Storage
+    LibraryStorage -.->|"Sinh token chia sẻ"| ShareViewer
+
+    QuizPage --> PassGate
+    PassGate -->|"Kiểm tra mật mã qua ExportHelper"| ExamSession
+    ExamSession --> AutoSubmit
+    AutoSubmit --> Storage
+
+    Storage --> Dashboard
+    Storage --> ResultsPage
+    Storage --> ReportPage
+
+    Dashboard -->|"Xuất Excel từng học sinh"| ExportHelper
+    ResultsPage -->|"Xuất Excel từng học sinh & danh sách"| ExportHelper
+    ReportPage -->|"Xuất Excel từng học sinh & toàn bộ"| ExportHelper
